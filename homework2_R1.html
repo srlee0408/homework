@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>homework1</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        table {
+            border: 1px solid;
+            border-collapse: collapse;
+            width: 500px;
+            text-align: center;
+        }
+        td,
+        th {
+            padding: 10px;
+            border: 1px solid;
+        }
+        .pic {
+            text-align: center;
+        }
+        .order {
+            width: 500px;
+        }
+        .wrap {
+            width: 500px;
+            margin: 10px auto;
+        }
+    </style>
+    <script>
+        // review
+        // - 등호 === 3개 쓰기
+        // - select number value 넣기
+        // - 주문 성공시 로직 else에 넣기
+        function order() {
+            let order1 = $('#order1').val();
+            let number = $('#number').val();
+            let address = $('#address').val();
+            let phone = $('#phone').val();
+            if (order1 === '') {
+                alert('이름을 입력해주세요');
+            } else if (number === '수량을 선택하세요') {
+                alert('수량을 입력해주세요');
+            } else if (address === '') {
+                alert('주소를 입력해주세요');
+            } else if (phone === '') {
+                alert('전화번호를 입력해주세요');
+            } else if (!/^\d{3}-\d{3,4}-\d{4}$/.test(phone)) {
+                alert('전화번호 형식이 올바르지 않습니다!')
+            } else {
+                alert('주문이 완료되었습니다!');
+                let orderinfo = `<tr>
+                                <td>${order1}</td>
+                                <td>${number}개</td>
+                                <td>${address}</td>
+                                <td>${phone}</td>
+                            </tr>`
+                $('#order-info').append(orderinfo)
+            }
+        }
+        window.onload = function () {
+            $.ajax({
+                type: "GET",
+                url: "https://api.manana.kr/exchange/rate.json",
+                data: {},
+                success: function (res) {
+                    let row = res[1]['rate']
+                    let temp = `${row}`
+                    $('#rate').append(temp)
+                }
+                // 페이지가 로딩된 후 실행해야 되는 코드를 추가한다.
+            })
+        }
+    </script>
+</head>
+<body>
+<div class="wrap">
+    <div class="pic">
+        <img src="https://images.coocha.co.kr/upload/2020/07/interparkep/25/thumb4_410457597.jpg"
+             width="500px">
+    </div>
+    <h1 style="display:inline;">광동 우롱차</h1>
+    <h5 style="display:inline;">가격 : 3000원/개</h5>
+    <p>
+        유명 산지인 중국 복건성에서 재배한 철관음 품종을 불렌딩하여 더욱 구수합니다.
+    </p>
+    <p id="rate" style="color: blue"><b>환율 : </b></p>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default1">주문자이름</span>
+        </div>
+        <input type="text" class="form-control" id="order1" aria-label="Default"
+               aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="number">수량</label>
+        </div>
+        <select class="custom-select" id="number">
+            <option selected>수량을 선택하세요</option>
+            <option value="1">1개</option>
+            <option value="2">2개</option>
+            <option value="3">3개</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default2">주소</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" id="address"
+               aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroup-sizing-default3">전화번호</span>
+        </div>
+        <input type="text" class="form-control" aria-label="Default" id="phone"
+               aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div style="text-align: center">
+        <button onclick="order()" type="button" class="btn btn-primary">주문하기</button>
+    </div>
+    <p></p>
+    <p></p>
+    <table>
+        <thead>
+        <tr>
+            <td><b>주문자 이름</b></td>
+            <td><b>수량</b></td>
+            <td><b>주소</b></td>
+            <td><b>전화번호</b></td>
+        </tr>
+        </thead>
+        <tbody id="order-info">
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
