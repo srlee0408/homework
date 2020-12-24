@@ -21,13 +21,22 @@ for music in musics:
 
     if a_tag is not None:
         name = a_tag.text
-        artist = music.select_one('td.info > a.artist.ellipsis').text
+        artist = music.select_one('td.info > a.artist.ellipsis').text.strip()
+        #artist = music.select_one('td.info > a.artist.ellipsis').text
         rank = music.select_one('td.number').text[0:2]
-        print(rank.strip(), name.strip(), artist.strip())
+        print(rank.strip(), name.strip(), artist)
 
         doc = {
-            'rank': rank,
-            'music': name,
-            'artist': artist
+            'rank': rank.strip(),
+            'music': name.strip(),
+            'artist': artist.strip()
         }
         db.genie.insert_one(doc)
+
+
+
+#문자열 가져오
+# a = 'hello world'
+# print(a[0]) #문자 첫 번째 인덱스 가져오기 h 출력
+# print(a[0:2]) #문자 첫 번째에서 3번째 미만 인덱스 가져오기, he 출력
+# print(a[:2]) #이렇게도 가능, 위와 같은 뜻
